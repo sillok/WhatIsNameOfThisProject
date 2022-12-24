@@ -1,0 +1,12 @@
+
+__pycache__/
+
+.wdm/
+
+.idea/
+
+geckodriver.log
+
+selenium_test.py
+
+test_async.py
