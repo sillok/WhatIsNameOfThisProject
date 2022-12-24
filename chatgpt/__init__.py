@@ -1,1 +1,1 @@
-from .async_chatgpt import ChatGPT
+from .chatgpt import ChatGPT
