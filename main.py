@@ -7,6 +7,7 @@ from fastapi import FastAPI, HTTPException
 from chatgpt import ChatGPT
 from pydantic import BaseModel
 from fastapi.middleware.cors import CORSMiddleware
+import requests
 
 app = FastAPI()
 
@@ -67,6 +68,28 @@ def get_answer(gpt_key: str):
         else:
             raise HTTPException(status_code=400, detail="waiting")
     else:
+        raise HTTPException(status_code=400, detail="error")
+
+@app.post("/fastname")
+def fastname(item: Item):
+    key = "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"
+    url = "https://api.openai.com/v1/completions"
+    headers = {
+        "Content-Type": "application/json",
+        "Authorization": f"Bearer {key}",
+    }
+    data = {
+        "prompt": f"{item.item}의 이름을 정해주세요.",
+        "max_tokens": 4000,
+        "temperature": 1.0,
+        "model": "text-davinci-003",
+    }
+    try:
+        response = requests.post(url, headers=headers, json=data)
+        resp = response.json()
+        print(resp)
+        return {"answer": resp["choices"][0]["text"].strip().strip('"')}
+    except:
         raise HTTPException(status_code=400, detail="error")
 
 
